@@ -74,3 +74,8 @@
 // } else {
 // 	console.log(false);
 // }
+
+
+// let str = 'Şəfiyeva'
+// let firstChar = str.charAt(0) 
+// console.log(firstChar); // "J"

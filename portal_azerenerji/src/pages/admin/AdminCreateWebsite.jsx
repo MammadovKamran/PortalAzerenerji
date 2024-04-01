@@ -27,7 +27,7 @@ const AdminCreateWebsite = () => {
 							</FormControl>
 
 							<Button type='submit' colorScheme='blue' mt={4} width='full'>
-								Submit
+								Create New
 							</Button>
 						</form>
 					</Box>

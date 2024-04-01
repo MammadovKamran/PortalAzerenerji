@@ -1,44 +1,41 @@
-import Login from './pages/Auth/Login';
-import Home from './pages/Home';
-import AdminLayout from './pages/admin/AdminLayout';
-import AdminCreateWebsite from './pages/admin/AdminCreateWebsite';
-// import AdminDeleteWebsite from './pages/admin/AdminDeleteWebsite';
-// import AdminUpdateWebsite from './pages/admin/AdminUpdateWebsite';
-// import LoginLayout from './pages/Auth/LoginLayout';
-import AdminWebsiteList from './pages/admin/AdminWebsiteList';
+/** @format */
+
+import { Navigate } from "react-router-dom";
+import { PrivateRoute } from "./PrivateRoute"; // Özel rotayı içe aktarın veya oluşturun
+import Login from "./pages/Auth/Login";
+import Home from "./pages/Home";
+import AdminLayout from "./pages/admin/AdminLayout";
+import AdminCreateWebsite from "./pages/admin/AdminCreateWebsite";
+import AdminWebsiteList from "./pages/admin/AdminWebsiteList";
 
 const routes = [
-	{
-		path: '/',
-		element: <Home />,
-		index: true,
-	},
-	{
-		path: 'admin',
-		element: <AdminLayout />,
-		children: [
-			{
-				index: true,
-				element: <Login />,
-			},
-			{
-				path: 'websites',
-				element: <AdminWebsiteList />,
-			},
-			{
-				path: 'create_new_website',
-				element: <AdminCreateWebsite />,
-			},
-			// {
-			// 	path: 'update_website',
-			// 	element: <AdminUpdateWebsite />,
-			// },
-			// {
-			// 	path: 'delete_website',
-			// 	element: <AdminDeleteWebsite />,
-			// },
-		],
-	},
+  {
+    path: "/",
+    element: <Home />,
+    index: true,
+  },
+  {
+    path: "admin",
+    element: <AdminLayout />,
+    children: [
+      {
+        path: "/", // Ana dizin
+        element: <Navigate to="/admin/login" />, // Otomatik olarak /admin/login'e yönlendir
+      },
+      {
+        path: "login", // Giriş yapma sayfası
+        element: <Login />,
+      },
+      {
+        path: "websites",
+        element: <PrivateRoute element={<AdminWebsiteList />} />, // Özel rotaya sarma
+      },
+      {
+        path: "create_new_website",
+        element: <PrivateRoute element={<AdminCreateWebsite />} />, // Özel rotaya sarma
+      },
+    ],
+  },
 ];
 
 export default routes;
