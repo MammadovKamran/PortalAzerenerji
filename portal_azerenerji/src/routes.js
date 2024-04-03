@@ -1,12 +1,11 @@
 /** @format */
 
-import { Navigate } from "react-router-dom";
-import { PrivateRoute } from "./PrivateRoute"; // Özel rotayı içe aktarın veya oluşturun
 import Login from "./pages/Auth/Login";
 import Home from "./pages/Home";
 import AdminLayout from "./pages/admin/AdminLayout";
-import AdminCreateWebsite from "./pages/admin/AdminCreateWebsite";
+import AdminCreateWebsite from "./pages/admin/AdminAddNewWebsite";
 import AdminWebsiteList from "./pages/admin/AdminWebsiteList";
+import ErrorPage from "./pages/ErrorPage";
 
 const routes = [
   {
@@ -17,25 +16,31 @@ const routes = [
   {
     path: "admin",
     element: <AdminLayout />,
+    errorElement: <ErrorPage />,
+
     children: [
       {
-        path: "/", // Ana dizin
-        element: <Navigate to="/admin/login" />, // Otomatik olarak /admin/login'e yönlendir
+        path: "*",
+        element: <ErrorPage />,
       },
       {
-        path: "login", // Giriş yapma sayfası
+        index: true,
         element: <Login />,
       },
       {
         path: "websites",
-        element: <PrivateRoute element={<AdminWebsiteList />} />, // Özel rotaya sarma
+        element: <AdminWebsiteList />,
       },
       {
         path: "create_new_website",
-        element: <PrivateRoute element={<AdminCreateWebsite />} />, // Özel rotaya sarma
+        element: <AdminCreateWebsite />,
       },
     ],
   },
+//   {
+//     path: "*",
+//     element: <ErrorPage />,
+//   },
 ];
 
 export default routes;

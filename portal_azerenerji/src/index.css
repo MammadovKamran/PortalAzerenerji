@@ -1,145 +1,121 @@
+/** @format */
+
 body {
-	margin: 0;
-	font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
-	-webkit-font-smoothing: antialiased;
-	-moz-osx-font-smoothing: grayscale;
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f0f0f0;
 }
 
-code {
-	font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
-}
-.navActive a {
-	text-decoration: none;
-	color: white;
-}
-.navActive a:hover,
-.navActive a.active {
-	color: #3bc6fa;
-}
+.backgroundImage {
+  background-image: url("./images/background.svg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  min-height: 100vh;
 
-.homeCard {
-	position: relative;
-	width: 270px;
-	height: 304px;
-	background-color: #385c74;
-	display: flex;
-	flex-direction: column;
-	justify-content: space-between;
-	padding: 12px;
-	gap: 12px;
-	border-radius: 8px;
-	cursor: pointer;
-}
+  .homeContainer {
+    position: absolute; 
+    top: 45%; 
+    left: 50%; 
+    transform: translate(-50%, -50%); 
+    overflow-y: scroll; 
+    max-height: calc(100vh - 40px); 
+    padding: 20px; 
 
-.homeCard::before {
-	content: '';
-	position: absolute;
-	inset: 0;
-	left: -5px;
-	margin: auto;
-	width: 280px;
-	height: 314px;
-	border-radius: 10px;
-	background: linear-gradient(-45deg, #e81cff 0%, #40c9ff 100%);
-	z-index: -10;
-	pointer-events: none;
-	transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
+    .cardHomeLogo {
+      position: relative;
+      width: 340px;
+      height: 120px;
+      border-radius: 14px;
+      z-index: 10;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 20px 20px 60px #bebebe, -20px -20px 60px #ffffff;
 
-.homeCard::after {
-	content: '';
-	z-index: -1;
-	position: absolute;
-	inset: 0;
-	background: linear-gradient(-45deg, #fc00ff 0%, #00dbde 100%);
-	transform: translate3d(0, 0, 0) scale(0.95);
-	filter: blur(20px);
-}
+      .cardHomeLogoBg {
+        position: absolute;
+        top: 5px;
+        left: 5px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 330px;
+        height: 110px;
+        border-radius: 8px;
+        overflow: hidden;
+        background: rgba(255, 255, 255, 0.95);
+        -webkit-backdrop-filter: blur(5px);
+        backdrop-filter: blur(24px);
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        outline: 2px solid white;
+        z-index: 2;
 
-.homeHeading {
-	text-transform: capitalize;
-	color: #ffff;
-	font-size: 27px;
-	font-weight: normal;
-	text-align: center;
-	margin-top: 10px;
-}
+        .logoAzerenerji {
+          max-width: 100%;
+          max-height: 100%;
+        }
+      }
+      .cardHomeLogoBlob {
+        position: absolute;
+        z-index: 1;
+        top: 50%;
+        left: 50%;
+        width: 300px;
+        height: 150px;
+        border-radius: 50%;
+        background-color: #3cc4ed;
+        opacity: 1;
+        filter: blur(12px);
+        animation: blob-bounce 4s infinite ease;
+      }
+    }
+    .homeCard {
+      background-color: #9bddf2;
+      border-radius: 8px;
+      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      text-align: center;
+      width: 360px;
+      margin-bottom: 20px;
+      transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55), background-color 0.5s ease, box-shadow 0.5s ease;
 
-.homeCard p:last-child {
-	color: #7dc0ff;
-	font-weight: 600;
-	font-size: 24px;
-}
-
-.homeCard:hover::after {
-	filter: blur(30px);
-}
-
-.homeCard:hover::before {
-	transform: rotate(-90deg) scaleX(1) scaleY(1.35);
-}
-
-.cardHomeLogo {
-	position: relative;
-	width: 350px;
-	height: 230px;
-	border-radius: 14px;
-	z-index: 1111;
-	overflow: hidden;
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	justify-content: center;
-	box-shadow: 20px 20px 60px #bebebe, -20px -20px 60px #ffffff;
-}
-
-.cardHomeLogoBg {
-	position: absolute;
-	top: 5px;
-	left: 5px;
-	width: 340px;
-	height: 220px;
-	z-index: 2;
-	background: rgba(255, 255, 255, 0.95);
-	-webkit-backdrop-filter: blur(5px);
-	backdrop-filter: blur(24px);
-	border-radius: 10px;
-	overflow: hidden;
-	outline: 2px solid white;
-}
-
-.cardHomeLogoBlob {
-	position: absolute;
-	z-index: 1;
-	top: 50%;
-	left: 50%;
-	width: 300px;
-	height: 150px;
-	border-radius: 50%;
-	background-color: #0069a6;
-	opacity: 1;
-	filter: blur(12px);
-	animation: blob-bounce 4s infinite ease;
+      .homeHeading {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: #333333;
+      }
+    }
+    .homeCard:hover {
+      transform: scale(1.05);
+      background-color: #3cc4ed;
+      box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+    }
+  }
 }
 
 @keyframes blob-bounce {
-	0% {
-		transform: translate(-100%, -100%) translate3d(0, 0, 0);
-	}
+  0% {
+    transform: translate(-100%, -100%) translate3d(0, 0, 0);
+  }
 
-	25% {
-		transform: translate(-100%, -100%) translate3d(100%, 0, 0);
-	}
+  25% {
+    transform: translate(-100%, -100%) translate3d(100%, 0, 0);
+  }
 
-	50% {
-		transform: translate(-100%, -100%) translate3d(100%, 100%, 0);
-	}
+  50% {
+    transform: translate(-100%, -100%) translate3d(100%, 100%, 0);
+  }
 
-	75% {
-		transform: translate(-100%, -100%) translate3d(0, 100%, 0);
-	}
+  75% {
+    transform: translate(-100%, -100%) translate3d(0, 100%, 0);
+  }
 
-	100% {
-		transform: translate(-100%, -100%) translate3d(0, 0, 0);
-	}
+  100% {
+    transform: translate(-100%, -100%) translate3d(0, 0, 0);
+  }
+  
 }
