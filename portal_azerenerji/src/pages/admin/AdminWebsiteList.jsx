@@ -16,6 +16,7 @@ import {
   useDisclosure,
   Flex,
   ButtonGroup,
+  Badge,
 } from "@chakra-ui/react";
 import { EditIcon, DeleteIcon } from "@chakra-ui/icons";
 import AdminEditModal from "./AdminEditModal";
@@ -75,7 +76,9 @@ const AdminWebsiteList = () => {
                   <Flex alignItems="center" justify={"space-between"}>
                     <AccordionButton _expanded={{ bg: "blue.600", color: "white" }} height="16">
                       <Box as="span" flex="1" textAlign="left">
-                        <h1 style={{ fontSize: "20px" }}> {item.name}</h1>
+                        {/* <Badge variant='subtle' colorScheme='blue' minW={"250"} textAlign={"center"} p={1}> */}
+                          <h1 style={{ fontSize: "20px" }}> {item.name}</h1>
+                        {/* </Badge> */}
                       </Box>
                       <AccordionIcon />
                     </AccordionButton>

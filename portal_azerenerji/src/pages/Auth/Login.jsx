@@ -6,11 +6,16 @@ import { Box, Button, Container, FormControl, FormLabel, Heading, Image, Input, 
 import { PasswordField } from "./PasswordField";
 import Logo from "../../images/AzerenerjiLogo.png";
 import alertify from "alertifyjs";
+import { useLocation } from 'react-router-dom';
 
 const Login = () => {
   const usernameRef = useRef("");
   const passwordRef = useRef("");
   const navigate = useNavigate();
+
+const location = useLocation()
+
+  console.log(location);
 
   const handleSubmit = (e) => {
     const username = usernameRef.current.value;
@@ -78,12 +83,6 @@ const Login = () => {
                   </FormControl>
                   <PasswordField ref={passwordRef} required />
                 </Stack>
-                {/* <HStack justify='space-between'>
-								<Checkbox defaultChecked>Remember me</Checkbox>
-								<Button variant='text' size='sm'>
-									Forgot password?
-								</Button>
-							</HStack> */}
                 <Stack spacing="6" mt={8}>
                   <Button width="100%" backgroundColor="#0069A6" color="white" type="submit">
                     Sign in

@@ -1,28 +1,24 @@
 /** @format */
-
+import { createBrowserRouter } from "react-router-dom";
 import Login from "./pages/Auth/Login";
 import Home from "./pages/Home";
 import AdminLayout from "./pages/admin/AdminLayout";
 import AdminCreateWebsite from "./pages/admin/AdminAddNewWebsite";
 import AdminWebsiteList from "./pages/admin/AdminWebsiteList";
-import ErrorPage from "./pages/ErrorPage";
+import ErrorBoundary from "./pages/ErrorBoundary";
 
-const routes = [
+const routes = createBrowserRouter([
   {
     path: "/",
     element: <Home />,
     index: true,
+    errorElement: <ErrorBoundary />,
   },
   {
-    path: "admin",
+    path: "/admin",
     element: <AdminLayout />,
-    errorElement: <ErrorPage />,
 
     children: [
-      {
-        path: "*",
-        element: <ErrorPage />,
-      },
       {
         index: true,
         element: <Login />,
@@ -37,10 +33,6 @@ const routes = [
       },
     ],
   },
-//   {
-//     path: "*",
-//     element: <ErrorPage />,
-//   },
-];
+]);
 
 export default routes;
