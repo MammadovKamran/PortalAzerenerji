@@ -17,7 +17,7 @@ const routes = createBrowserRouter([
   {
     path: "/admin",
     element: <AdminLayout />,
-
+    errorElement: <ErrorBoundary />,
     children: [
       {
         index: true,

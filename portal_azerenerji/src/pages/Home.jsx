@@ -4,13 +4,38 @@ import React, { useEffect, useState } from "react";
 import { Container, Wrap, WrapItem, Center, Image } from "@chakra-ui/react";
 import logo from "../images/AzerenerjiLogo-removebg-preview.png";
 
+// fetch("http://10.10.12.45:8080/api/v1/websites/find-by-id/1")
+// fetch("http://10.10.12.45:8080/api/v1/websites")
+
 const Home = () => {
   const [data, setData] = useState([]);
+
   useEffect(() => {
-    fetch("http://localhost:3000/websites")
+    fetch("http://10.10.12.45:8080/api/v1/websites")
       .then((res) => res.json())
-      .then((data) => setData(data));
+       .then((data) => setData(data))
+      .then((data) => console.log(data));
   }, []);
+
+  // console.log(data);
+
+  useEffect(() => {
+    const requestOptions = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        id: 1,
+        name: "Test5",
+        url: "Test",
+        image: "Test",
+      }),
+    };
+    fetch("http://10.10.12.45:8080/api/v1/websites/create", requestOptions)
+      .then((response) => response.json())
+      .then((data) => console.log(data, "post response"));
+  }, []);
+
+ 
 
   return (
     <>

@@ -1,38 +1,17 @@
-import React, { useState, useEffect } from "react";
-import {
-  AlertDialog,
-  AlertDialogBody,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogContent,
-  AlertDialogOverlay,
-  Button,
-} from "@chakra-ui/react";
+/** @format */
+
+import React from "react";
+import { AlertDialog, AlertDialogBody, AlertDialogFooter, AlertDialogHeader, AlertDialogContent, AlertDialogOverlay, Button } from "@chakra-ui/react";
 const AdminDeleteModal = ({ isOpen, onClose, overlay, website }) => {
-  const [data, setData] = useState({
-    id: "",
-    name: "",
-    url: "",
-    logo: "",
-  });
   const cancelRef = React.useRef();
 
-  const handleDelete = (e) => {
-    // if (e.target.type === 'text') {
-    // 	setData({ ...data, [e.target.name]: e.target.value });
-    // }
-    // if (e.target.type === 'file') {
-    // 	setData({ ...data, [e.target.name]: { name: e.target.files[0].name, size: e.target.files[0].size } });
-    // }
-
-    console.log(data);
+  const handleDelete = () => {
+    fetch(`http://10.10.12.45:8080/api/v1/websites/delete/${website.id}`, {
+      method: "DELETE",
+    }).then(() => console.log("Delete successful"));
     onClose();
   };
-  useEffect(() => {
-    if (website) {
-      setData({ id: website.id, name: website.name || "", url: website.url || "", logo: website.logo || "" });
-    }
-  }, [website]);
+
   return (
     <>
       <AlertDialog isOpen={isOpen} leastDestructiveRef={cancelRef} onClose={onClose}>
@@ -44,14 +23,14 @@ const AdminDeleteModal = ({ isOpen, onClose, overlay, website }) => {
             </AlertDialogHeader>
 
             <AlertDialogBody>
-              Are you sure to delete <b>{`${data.name}`}</b> website? You can't undo this action afterward
+              Are you sure to delete <b>{`${website ? website.name : null}`}</b> website? You can't undo this action afterward
             </AlertDialogBody>
 
             <AlertDialogFooter>
               <Button ref={cancelRef} onClick={onClose}>
                 Cancel
               </Button>
-              <Button colorScheme="red" ml={3} onClick={(e) => handleDelete(e)}>
+              <Button type="button" colorScheme="red" ml={3} onClick={handleDelete}>
                 Delete
               </Button>
             </AlertDialogFooter>

@@ -37,6 +37,7 @@ const location = useLocation()
             alertify.error("Please enter your email or password!");
             navigate("/admin");
           } else if (response.status === 200) {
+            console.log("logged in");
             return response.json();
           }
         })

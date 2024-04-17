@@ -16,7 +16,6 @@ import {
   useDisclosure,
   Flex,
   ButtonGroup,
-  Badge,
 } from "@chakra-ui/react";
 import { EditIcon, DeleteIcon } from "@chakra-ui/icons";
 import AdminEditModal from "./AdminEditModal";
@@ -30,38 +29,29 @@ const AdminWebsiteList = () => {
   const OverlayOne = () => <ModalOverlay bg="blackAlpha.300" backdropFilter="blur(10px) hue-rotate(90deg)" />;
   const [overlay, setOverlay] = React.useState(<OverlayOne />);
 
-  const handleEditClick = (website) => {
+  useEffect(() => {
+    if (data.length > 0) {
+      fetch("http://10.10.12.45:8080/api/v1/websites")
+        .then((res) => res.json())
+        .then((data) => setData(data));
+      console.log(data);
+    }
+  }, [data]);
+
+  //
+
+  const sendEditModal = (website) => {
     setSelectedWebsite(website);
     setOverlay(<OverlayOne />);
     onOpenEdit();
   };
 
-  console.log(data);
-
-  const handleDeleteClick = (website) => {
+  const sendDeleteModal = (e, website) => {
     setSelectedWebsite(website);
     setOverlay(<OverlayOne />);
     onOpenDelete();
-
-    // onOpen();
-    // 		fetch('http://localhost:3000/websites', {
-    // 			method: 'DELETE',
-    // 			headers: { 'Content-Type': 'application/json' },
-    // 			body: JSON.stringify({ id: website.id })
-    // 		});
-    // 		setData(data.filter((item) => item.id !== website.id));
-    // 		onClose();
-    // 		console.log(data);
-    // 		onClose();
-    //
+    e.preventDefault();
   };
-
-  useEffect(() => {
-    fetch("http://localhost:3000/websites")
-      .then((response) => response.json())
-      .then((data) => setData(data))
-      .catch((error) => console.error(error));
-  }, []);
 
   return (
     <>
@@ -74,10 +64,21 @@ const AdminWebsiteList = () => {
               <Flex direction={"row"} w={"100%"} key={item.id}>
                 <AccordionItem mr={2} w={"90%"}>
                   <Flex alignItems="center" justify={"space-between"}>
-                    <AccordionButton _expanded={{ bg: "blue.600", color: "white" }} height="16">
+                    <AccordionButton
+                      _expanded={{
+                        bg: "blue.600",
+                        color: "white",
+                      }}
+                      height="16">
                       <Box as="span" flex="1" textAlign="left">
                         {/* <Badge variant='subtle' colorScheme='blue' minW={"250"} textAlign={"center"} p={1}> */}
-                          <h1 style={{ fontSize: "20px" }}> {item.name}</h1>
+                        <h1
+                          style={{
+                            fontSize: "20px",
+                          }}>
+                          {" "}
+                          {item.name}
+                        </h1>
                         {/* </Badge> */}
                       </Box>
                       <AccordionIcon />
@@ -87,17 +88,23 @@ const AdminWebsiteList = () => {
                   <AccordionPanel pb={4}>
                     <Flex justifyContent="space-between" alignItems="center" mr="50">
                       <a href={item.url} target="_blank" rel="noopener noreferrer">
-                        <h2 style={{ fontSize: "20px", color: "#2B6CB0" }}>{item.url}</h2>
+                        <h2
+                          style={{
+                            fontSize: "20px",
+                            color: "#2B6CB0",
+                          }}>
+                          {item.url}
+                        </h2>
                       </a>
                       <Image boxSize="100px" objectFit="cover" src={process.env.PUBLIC_URL + item.logo} />
                     </Flex>
                   </AccordionPanel>
                 </AccordionItem>
                 <ButtonGroup pt={3}>
-                  <Button colorScheme="blue" mr="3" leftIcon={<EditIcon />} onClick={(e) => handleEditClick(item)}>
+                  <Button colorScheme="blue" mr="3" leftIcon={<EditIcon />} onClick={(e) => sendEditModal(item)}>
                     Edit
                   </Button>
-                  <Button colorScheme="red" leftIcon={<DeleteIcon />} onClick={(e) => handleDeleteClick(item)}>
+                  <Button type="button" colorScheme="red" leftIcon={<DeleteIcon />} onClick={(e) => sendDeleteModal(e, item)}>
                     Delete
                   </Button>
                 </ButtonGroup>
