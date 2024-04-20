@@ -50,7 +50,7 @@ const AdminAddNewWebsite = () => {
             <form onSubmit={handleSubmit}>
               <FormControl id="text" onChange={(e) => handleChange(e)}>
                 <FormLabel>Website Name</FormLabel>
-                <Input type="text" name="name" placeholder="Enter website name" value={data.name} />
+                <Input type="text" required name="name" placeholder="Enter website name" value={data.name} />
               </FormControl>
               <FormControl id="url" mt={4} onChange={(e) => handleChange(e)}>
                 <FormLabel>Website url</FormLabel>
@@ -59,7 +59,7 @@ const AdminAddNewWebsite = () => {
 
               <FormControl id="file" mt={4} onChange={(e) => handleChange(e)}>
                 <FormLabel>Upload File</FormLabel>
-                <Input type="file" pt={1} name="image" />
+                <Input type="file" pt={1} name="image" required />
               </FormControl>
 
               <Button type="submit" colorScheme="blue" mt={4} width="full">

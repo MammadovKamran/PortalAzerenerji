@@ -17,28 +17,13 @@ const Home = () => {
       .then((data) => console.log(data));
   }, []);
 
-  // console.log(data);
-
-  useEffect(() => {
-    const requestOptions = {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        id: 1,
-        name: "Test5",
-        url: "Test",
-        image: "Test",
-      }),
-    };
-    fetch("http://10.10.12.45:8080/api/v1/websites/create", requestOptions)
-      .then((response) => response.json())
-      .then((data) => console.log(data, "post response"));
-  }, []);
+   console.log(data);
 
  
 
   return (
     <>
+    
       <div className="backgroundImage">
         <Container maxW="xxl" mt="40px" className="homeContainer">
           <Container mb="40px">

@@ -30,15 +30,11 @@ const AdminWebsiteList = () => {
   const [overlay, setOverlay] = React.useState(<OverlayOne />);
 
   useEffect(() => {
-    if (data.length > 0) {
-      fetch("http://10.10.12.45:8080/api/v1/websites")
-        .then((res) => res.json())
-        .then((data) => setData(data));
-      console.log(data);
-    }
-  }, [data]);
-
-  //
+    fetch("http://10.10.12.45:8080/api/v1/websites")
+      .then((res) => res.json())
+      .then((data) => setData(data));
+    console.log(data);
+  }, [setData]);
 
   const sendEditModal = (website) => {
     setSelectedWebsite(website);
@@ -46,11 +42,10 @@ const AdminWebsiteList = () => {
     onOpenEdit();
   };
 
-  const sendDeleteModal = (e, website) => {
+  const sendDeleteModal = (website) => {
     setSelectedWebsite(website);
     setOverlay(<OverlayOne />);
     onOpenDelete();
-    e.preventDefault();
   };
 
   return (
@@ -104,7 +99,7 @@ const AdminWebsiteList = () => {
                   <Button colorScheme="blue" mr="3" leftIcon={<EditIcon />} onClick={(e) => sendEditModal(item)}>
                     Edit
                   </Button>
-                  <Button type="button" colorScheme="red" leftIcon={<DeleteIcon />} onClick={(e) => sendDeleteModal(e, item)}>
+                  <Button type="button" colorScheme="red" leftIcon={<DeleteIcon />} onClick={(e) => sendDeleteModal(item)}>
                     Delete
                   </Button>
                 </ButtonGroup>

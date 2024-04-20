@@ -1,3 +1,5 @@
+/** @format */
+
 import React, { useState, useEffect } from "react";
 import { Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, Button, FormControl, FormLabel, Input, Image } from "@chakra-ui/react";
 
@@ -8,8 +10,14 @@ const AdminEditModal = ({ isOpen, onClose, overlay, website }) => {
     id: "",
     name: "",
     url: "",
-    logo: "",
+    image: {},
   });
+
+  useEffect(() => {
+    if (website) {
+      setData({ id: website.id, name: website.name, url: website.url || "", image: website.image || {} });
+    }
+  }, [website]);
 
   const handleSave = (e) => {
     if (e.target.type === "text") {
@@ -22,12 +30,23 @@ const AdminEditModal = ({ isOpen, onClose, overlay, website }) => {
     // onClose();
   };
 
-  const handleSubmit = () => {};
-  useEffect(() => {
-    if (website) {
-      setData({ id: website.id, name: website.name || "", url: website.url || "", logo: website.logo || "" });
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const formData = new FormData();
+    for (const key in data) {
+      if (data[key]) {
+        formData.append(key, data[key]);
+      }
     }
-  }, [website]);
+    const requestOptions = {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    };
+    fetch(`http://10.10.12.45:8080/api/v1/websites/update/${website.id}`, requestOptions)
+      .then((response) => response.json())
+      .then((data) => console.log(data, "edited data"));
+  };
 
   return (
     <>
@@ -49,8 +68,8 @@ const AdminEditModal = ({ isOpen, onClose, overlay, website }) => {
             </FormControl>
             <FormControl mt={4}>
               <FormLabel>Website image</FormLabel>
-              <Image boxSize="100px" objectFit="cover" src="https://bit.ly/dan-abramov" />
-              <Input mt={4} py="1" type="file" required name="logo" placeholder="Website URL" onChange={(e) => handleSave(e)} />
+              <Image boxSize="100px" objectFit="cover" />
+              <Input mt={4} py="1" type="file" required name="image" placeholder="Website URL" onChange={(e) => handleSave(e)} />
             </FormControl>
           </ModalBody>
 
