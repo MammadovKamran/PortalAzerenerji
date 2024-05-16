@@ -37,12 +37,13 @@ const Home = () => {
             </Center>
           </Container>
           <Wrap spacing="50px" justify="center">
-            {data.map((item) => (
+            { data.map((item) => (
               <WrapItem>
                 <Center>
                   <div className="homeCard">
                     <p className="homeHeading">{item.name}</p>
-                    <p className="homeBottom">AzərEnerji ASC</p>
+                    {/* <p className="homeBottom">AzərEnerji ASC</p> */}
+                    <Image  objectFit="contain"  className="homeImage" src={item.image} alt="Azerenerji logo"/>
                   </div>
                 </Center>
               </WrapItem>

@@ -6,30 +6,25 @@ import { Box, Button, Container, FormControl, FormLabel, Heading, Image, Input, 
 import { PasswordField } from "./PasswordField";
 import Logo from "../../images/AzerenerjiLogo.png";
 import alertify from "alertifyjs";
-import { useLocation } from 'react-router-dom';
 
 const Login = () => {
-  const usernameRef = useRef("");
+  const emailRef = useRef("");
   const passwordRef = useRef("");
   const navigate = useNavigate();
 
-const location = useLocation()
-
-  console.log(location);
-
   const handleSubmit = (e) => {
-    const username = usernameRef.current.value;
+    const email = emailRef.current.value;
     const password = passwordRef.current.value;
-    console.log(username, password);
-    if (username && password) {
-      fetch("...", {
+    if (email && password) {
+      fetch("http://10.10.12.45:8080/api/v1/auth/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          username: username,
+          email: email,
           password: password,
+          rememberMe: false,
         }),
       })
         .then((response) => {
@@ -37,18 +32,17 @@ const location = useLocation()
             alertify.error("Please enter your email or password!");
             navigate("/admin");
           } else if (response.status === 200) {
-            console.log("logged in");
             return response.json();
           }
         })
         .then((data) => {
-          console.log(data);
-          // localStorage.setItem('token', data.accessToken);
-          // localStorage.setItem('id', data.id);
+          // console.log(data);
+          localStorage.setItem("token", data.accessToken);
+          localStorage.setItem("id", data.id);
           // setAccessToken(localStorage.getItem('token'));
           // setId(localStorage.getItem('id'));
-          // navigate(`/admin/${data.id}`);
-          // alertify.success('Successfully logged in!');
+          navigate(`/admin/websites`);
+          alertify.success("Successfully logged in!");
         });
     } else {
       alertify.error("Please enter your email or password!");
@@ -64,8 +58,7 @@ const location = useLocation()
             <Image borderRadius="lg" alt="Logo" width="200px" height="100px" objectFit="cover" objectPosition="center" src={Logo} />
             <Stack spacing={{ base: "2", md: "3" }} textAlign="center">
               <Heading color="#0069A6" size={{ base: "xs", md: "lg" }}>
-                {" "}
-                Log in{" "}
+                Log in
               </Heading>
             </Stack>
           </Stack>
@@ -79,8 +72,8 @@ const location = useLocation()
               <form onSubmit={handleSubmit}>
                 <Stack spacing="5">
                   <FormControl>
-                    <FormLabel htmlFor="text">User name</FormLabel>
-                    <Input id="username" type="text" ref={usernameRef} required />
+                    <FormLabel htmlFor="text">Email</FormLabel>
+                    <Input id="email" type="email" ref={emailRef} required />
                   </FormControl>
                   <PasswordField ref={passwordRef} required />
                 </Stack>

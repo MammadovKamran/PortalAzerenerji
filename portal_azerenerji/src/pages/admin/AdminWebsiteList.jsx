@@ -71,7 +71,6 @@ const AdminWebsiteList = () => {
                           style={{
                             fontSize: "20px",
                           }}>
-                          {" "}
                           {item.name}
                         </h1>
                         {/* </Badge> */}
@@ -91,7 +90,8 @@ const AdminWebsiteList = () => {
                           {item.url}
                         </h2>
                       </a>
-                      <Image boxSize="100px" objectFit="cover" src={process.env.PUBLIC_URL + item.logo} />
+                      {/* <img src={`https://websites-portal-images.s3.eu-north-1.amazonaws.com/1715860933552-pnetw.jpg`} /> */}
+                      <Image boxSize="100px" objectFit="contain" src={`https://websites-portal-images.s3.eu-north-1.amazonaws.com/${item.image}`} />
                     </Flex>
                   </AccordionPanel>
                 </AccordionItem>

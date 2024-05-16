@@ -1,16 +1,28 @@
 /** @format */
 
 import React, { useState, useEffect } from "react";
-import { Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, Button, FormControl, FormLabel, Input, Image } from "@chakra-ui/react";
+import {
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+  Button,
+  FormControl,
+  FormLabel,
+  Input,
+  Image,
+} from "@chakra-ui/react";
 
 const AdminEditModal = ({ isOpen, onClose, overlay, website }) => {
   const initialRef = React.useRef(null);
   const finalRef = React.useRef(null);
   const [data, setData] = useState({
-    id: "",
     name: "",
     url: "",
-    image: {},
+    image: "",
   });
 
   useEffect(() => {
@@ -24,7 +36,7 @@ const AdminEditModal = ({ isOpen, onClose, overlay, website }) => {
       setData({ ...data, [e.target.name]: e.target.value });
     }
     if (e.target.type === "file") {
-      setData({ ...data, [e.target.name]: { name: e.target.files[0].name, size: e.target.files[0].size } });
+      setData({ ...data, [e.target.name]: e.target.files[0].name });
     }
     console.log(data);
     // onClose();
@@ -32,15 +44,15 @@ const AdminEditModal = ({ isOpen, onClose, overlay, website }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const formData = new FormData();
-    for (const key in data) {
-      if (data[key]) {
-        formData.append(key, data[key]);
-      }
-    }
+    // const formData = new FormData();
+    // for (const key in data) {
+    //   if (data[key]) {
+    //     formData.append(key, data[key]);
+    //   }
+    // }
     const requestOptions = {
       method: "PUT",
-      headers: { "Content-Type": "application/json" },
+      headers: { "Content-Type": "application/json", Authorization: `Bearer ${localStorage.getItem("token")}` },
       body: JSON.stringify(data),
     };
     fetch(`http://10.10.12.45:8080/api/v1/websites/update/${website.id}`, requestOptions)
@@ -50,7 +62,14 @@ const AdminEditModal = ({ isOpen, onClose, overlay, website }) => {
 
   return (
     <>
-      <Modal closeOnOverlayClick={false} isCentered initialFocusRef={initialRef} finalFocusRef={finalRef} isOpen={isOpen} onClose={onClose} size={"xl"}>
+      <Modal
+        closeOnOverlayClick={false}
+        isCentered
+        initialFocusRef={initialRef}
+        finalFocusRef={finalRef}
+        isOpen={isOpen}
+        onClose={onClose}
+        size={"xl"}>
         {overlay}
         <ModalOverlay />
         <ModalContent>
