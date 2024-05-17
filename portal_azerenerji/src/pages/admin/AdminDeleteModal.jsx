@@ -2,14 +2,16 @@
 
 import React from "react";
 import { AlertDialog, AlertDialogBody, AlertDialogFooter, AlertDialogHeader, AlertDialogContent, AlertDialogOverlay, Button } from "@chakra-ui/react";
-const AdminDeleteModal = ({ isOpen, onClose, overlay, website }) => {
+const AdminDeleteModal = ({ isOpen, onClose, overlay, website, setDataShouldBeFetched }) => {
   const cancelRef = React.useRef();
 
   const handleDelete = () => {
+    setDataShouldBeFetched(false);
     fetch(`http://10.10.12.45:8080/api/v1/websites/delete/${website.id}`, {
       method: "DELETE",
     }).then(() => console.log("Delete successful"));
     onClose();
+    setDataShouldBeFetched(true);
   };
 
   return (

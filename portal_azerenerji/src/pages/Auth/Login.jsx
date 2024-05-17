@@ -11,7 +11,6 @@ const Login = () => {
   const emailRef = useRef("");
   const passwordRef = useRef("");
   const navigate = useNavigate();
-
   const handleSubmit = (e) => {
     const email = emailRef.current.value;
     const password = passwordRef.current.value;

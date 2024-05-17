@@ -13,17 +13,14 @@ const Home = () => {
   useEffect(() => {
     fetch("http://10.10.12.45:8080/api/v1/websites")
       .then((res) => res.json())
-       .then((data) => setData(data))
+      .then((data) => setData(data))
       .then((data) => console.log(data));
   }, []);
 
-   console.log(data);
-
- 
+  console.log(data);
 
   return (
     <>
-    
       <div className="backgroundImage">
         <Container maxW="xxl" mt="40px" className="homeContainer">
           <Container mb="40px">
@@ -37,13 +34,18 @@ const Home = () => {
             </Center>
           </Container>
           <Wrap spacing="50px" justify="center">
-            { data.map((item) => (
+            {data.map((item) => (
               <WrapItem>
                 <Center>
                   <div className="homeCard">
                     <p className="homeHeading">{item.name}</p>
                     {/* <p className="homeBottom">AzərEnerji ASC</p> */}
-                    <Image  objectFit="contain"  className="homeImage" src={item.image} alt="Azerenerji logo"/>
+                    <Image
+                      objectFit="contain"
+                      className="homeImage"
+                      src={`https://portalazerenerji.s3.eu-north-1.amazonaws.com/${item.image}`}
+                      alt="Azerenerji logo"
+                    />
                   </div>
                 </Center>
               </WrapItem>

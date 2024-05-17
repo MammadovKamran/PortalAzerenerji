@@ -18,23 +18,41 @@ import {
   ButtonGroup,
 } from "@chakra-ui/react";
 import { EditIcon, DeleteIcon } from "@chakra-ui/icons";
+// import alertify from "alertifyjs";
 import AdminEditModal from "./AdminEditModal";
 import AdminDeleteModal from "./AdminDeleteModal";
 
 const AdminWebsiteList = () => {
   const [data, setData] = useState([]);
-  const [selectedWebsite, setSelectedWebsite] = useState(null);
+  const [dataShouldBeFetched, setDataShouldBeFetched] = useState(false);
+  const [selectedWebsite, setSelectedWebsite] = useState({
+    name: "",
+    url: "",
+    image: "",
+  });
   const { onOpen: onOpenEdit, isOpen: isOpenEdit, onClose: onCloseEdit } = useDisclosure();
   const { onOpen: onOpenDelete, isOpen: isOpenDelete, onClose: onCloseDelete } = useDisclosure();
   const OverlayOne = () => <ModalOverlay bg="blackAlpha.300" backdropFilter="blur(10px) hue-rotate(90deg)" />;
   const [overlay, setOverlay] = React.useState(<OverlayOne />);
 
-  useEffect(() => {
+  const fetchData = () => {
     fetch("http://10.10.12.45:8080/api/v1/websites")
       .then((res) => res.json())
       .then((data) => setData(data));
-    console.log(data);
-  }, [setData]);
+  };
+  console.log(dataShouldBeFetched);
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    if (dataShouldBeFetched) {
+      fetchData();
+    }
+  }, [dataShouldBeFetched]);
+
+  console.log(data);
 
   const sendEditModal = (website) => {
     setSelectedWebsite(website);
@@ -52,8 +70,22 @@ const AdminWebsiteList = () => {
     <>
       <Container minWidth="6xl" mt="20" mb="20">
         <ChakraProvider>
-          <AdminEditModal isOpen={isOpenEdit} onClose={onCloseEdit} overlay={overlay} website={selectedWebsite} />
-          <AdminDeleteModal isOpen={isOpenDelete} onClose={onCloseDelete} overlay={overlay} website={selectedWebsite} />
+          <AdminEditModal
+            isOpen={isOpenEdit}
+            onClose={onCloseEdit}
+            overlay={overlay}
+            selectedWebsite={selectedWebsite}
+            setSelectedWebsite={setSelectedWebsite}
+            setDataShouldBeFetched={setDataShouldBeFetched}
+          />
+          <AdminDeleteModal
+            isOpen={isOpenDelete}
+            onClose={onCloseDelete}
+            overlay={overlay}
+            website={selectedWebsite}
+            fetchData={fetchData}
+            setDataShouldBeFetched={setDataShouldBeFetched}
+          />
           <Accordion allowMultiple>
             {data.map((item) => (
               <Flex direction={"row"} w={"100%"} key={item.id}>
@@ -90,8 +122,12 @@ const AdminWebsiteList = () => {
                           {item.url}
                         </h2>
                       </a>
-                      {/* <img src={`https://websites-portal-images.s3.eu-north-1.amazonaws.com/1715860933552-pnetw.jpg`} /> */}
-                      <Image boxSize="100px" objectFit="contain" src={`https://websites-portal-images.s3.eu-north-1.amazonaws.com/${item.image}`} />
+                      <Image
+                        alt={item.name}
+                        boxSize="100px"
+                        objectFit="contain"
+                        src={`https://portalazerenerji.s3.eu-north-1.amazonaws.com/${item.image}`}
+                      />
                     </Flex>
                   </AccordionPanel>
                 </AccordionItem>

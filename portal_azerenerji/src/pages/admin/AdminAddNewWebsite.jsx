@@ -4,8 +4,12 @@ import React, { useState } from "react";
 import { ChakraProvider, FormControl, FormLabel, Input, Button, Box, Flex, Text } from "@chakra-ui/react";
 import { Image } from "@chakra-ui/react";
 import * as AWS from "aws-sdk";
+import alertify from "alertifyjs";
+import { useNavigate } from "react-router-dom";
 
 const AdminAddNewWebsite = () => {
+  const navigate = useNavigate();
+  const [selectedImg, setSelectedImg] = useState(null);
   const [data, setData] = useState({
     name: "",
     url: "",
@@ -14,11 +18,9 @@ const AdminAddNewWebsite = () => {
   const [awss3, setAwss3] = useState({
     name: data.name,
     url: data.url,
-    image: data.image,
+    image: null,
   });
-  const [selectedImg, setSelectedImg] = useState(null);
-  console.log(awss3);
-  const uploadFile = async () => {
+  const uploadFile = () => {
     if (!data.image) {
       alert("Please select a file.");
       return;
@@ -26,9 +28,8 @@ const AdminAddNewWebsite = () => {
 
     // Dosya verisini al
     const fileData = awss3.image;
-
     // S3 Bucket Adı
-    const S3_BUCKET = "websites-portal-images";
+    const S3_BUCKET = "portalazerenerji";
 
     // S3 Bölgesi
     const REGION = "eu-north-1";
@@ -43,10 +44,6 @@ const AdminAddNewWebsite = () => {
       region: REGION,
     });
 
-    // Dosya Anahtarını Oluştur
-    // const timestamp = new Date().getTime();
-    // const key = `${timestamp}-${fileData.name}`;
-
     // Dosya Parametreleri
     const params = {
       Bucket: S3_BUCKET,
@@ -58,17 +55,16 @@ const AdminAddNewWebsite = () => {
     s3.putObject(params)
       .on("httpUploadProgress", (evt) => {
         // Dosya yükleme ilerlemesi
-        console.log("Yükleniyor " + parseInt((evt.loaded * 100) / evt.total) + "%");
+        // console.log("Yükleniyor " + parseInt((evt.loaded * 100) / evt.total) + "%");
       })
       .promise()
       .then((data) => {
-        console.log(data);
-        // Dosya başarıyla yüklendi
-        alert("Dosya başarıyla yüklendi.");
+        alertify.success("Şəkil bazaya uğurla yükləndi");
+        postWebsite();
       })
       .catch((err) => {
         console.error(err);
-        alert("Dosya yüklenirken bir hata oluştu.");
+        alertify.error("Şəkil bazaya yüklənən zaman xəta baş verdi.");
       });
   };
 
@@ -79,15 +75,12 @@ const AdminAddNewWebsite = () => {
       setSelectedImg(URL.createObjectURL(e.target.files[0]));
       return;
     } else {
+      setAwss3({ ...awss3, [e.target.name]: e.target.value });
       setData({ ...data, [e.target.name]: e.target.value });
       return;
     }
   };
-  console.log(data);
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    uploadFile();
+  const postWebsite = () => {
     const requestOptions = {
       method: "POST",
       headers: {
@@ -98,7 +91,14 @@ const AdminAddNewWebsite = () => {
     };
     fetch("http://10.10.12.45:8080/api/v1/websites/save", requestOptions)
       .then((response) => response.json())
-      .then((data) => console.log(data, "post response"));
+      .then((data) => setData(data));
+    console.log(data);
+    alertify.success("Website uğurla əlavə olundu");
+  };
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    uploadFile();
+    navigate("/admin/websites");
   };
 
   return (
