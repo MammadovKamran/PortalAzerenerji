@@ -6,11 +6,11 @@ import { Image } from "@chakra-ui/react";
 import * as AWS from "aws-sdk";
 import alertify from "alertifyjs";
 import { useNavigate } from "react-router-dom";
-import { MyContext } from "../../MyContext";
+import { LoaderContext } from "../../LoaderContext";
 
 const AdminAddNewWebsite = () => {
   const navigate = useNavigate();
-  const { setReload } = useContext(MyContext);
+  const { setReload } = useContext(LoaderContext);
   const [selectedImg, setSelectedImg] = useState(null);
   const [data, setData] = useState({
     name: "",

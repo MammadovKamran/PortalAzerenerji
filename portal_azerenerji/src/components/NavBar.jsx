@@ -27,18 +27,23 @@ const NavBar = () => {
             </Flex>
           </Box>
 
-          <Box display={{ base: "none", md: "block" }}>
-            <Menu>
+          <Box display={{ base: "none", md: "block" }} fontSize="xl">
+            {/* <Menu>
               <MenuButton variant="unstyled" as={Button} rightIcon={<Avatar src="https://bit.ly/broken-link" />} />
               <MenuList>
                 <MenuGroup color="teal" title="Profile">
-                  {/* <MenuItem color="teal">My Profile</MenuItem> */}
-                  <MenuItem color="teal" onClick={(e) => localStorage.clear()}>
-                    Log Out{" "}
-                  </MenuItem>
+                  <MenuItem color="teal">My Profile</MenuItem> 
+                  <Link to="/admin">
+                    <MenuItem color="teal" onClick={(e) => localStorage.clear()}>
+                      Log Out
+                    </MenuItem>
+                  </Link>
                 </MenuGroup>
               </MenuList>
-            </Menu>
+            </Menu> */}
+            <NavLink to="/admin" onClick={(e) => localStorage.clear()}>
+              Log Out
+            </NavLink>
           </Box>
         </Flex>
       </Box>

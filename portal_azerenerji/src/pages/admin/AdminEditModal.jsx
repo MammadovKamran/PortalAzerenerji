@@ -15,12 +15,12 @@ import {
   Input,
   Image,
 } from "@chakra-ui/react";
-import { MyContext } from "../../MyContext";
+import { LoaderContext } from "../../LoaderContext";
 
 const AdminEditModal = ({ isOpen, onClose, overlay, selectedWebsite, setSelectedWebsite }) => {
   const initialRef = React.useRef(null);
   const finalRef = React.useRef(null);
-  const { setReload } = useContext(MyContext);
+  const { setReload } = useContext(LoaderContext);
 
   // const [selectedWebsite, setSelectedWebsite] = useState({
   //   name: "",

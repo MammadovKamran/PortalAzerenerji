@@ -2,13 +2,12 @@
 
 import React, { useContext } from "react";
 import { AlertDialog, AlertDialogBody, AlertDialogFooter, AlertDialogHeader, AlertDialogContent, AlertDialogOverlay, Button } from "@chakra-ui/react";
-import { MyContext } from "../../MyContext";
+import { LoaderContext } from "../../LoaderContext";
 const AdminDeleteModal = ({ isOpen, onClose, overlay, website }) => {
   const cancelRef = React.useRef();
-  const { setReload } = useContext(MyContext);
+  const { setReload } = useContext(LoaderContext);
 
   const handleDelete = () => {
-    // setReload(false);
     fetch(`http://10.10.12.45:8081/api/v1/websites/delete/${website.id}`, {
       method: "DELETE",
     }).then(() => console.log("Delete successful"));

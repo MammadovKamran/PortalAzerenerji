@@ -6,6 +6,7 @@ import AdminLayout from "./pages/admin/AdminLayout";
 import AdminCreateWebsite from "./pages/admin/AdminAddNewWebsite";
 import AdminWebsiteList from "./pages/admin/AdminWebsiteList";
 import ErrorBoundary from "./pages/ErrorBoundary";
+import PrivateRoute from "./pages/Auth/PrivateRoute";
 
 const routes = createBrowserRouter([
   {
@@ -25,7 +26,11 @@ const routes = createBrowserRouter([
       },
       {
         path: "websites",
-        element: <AdminWebsiteList />,
+        element: (
+          <PrivateRoute>
+            <AdminWebsiteList />
+          </PrivateRoute>
+        ),
       },
       {
         path: "create_new_website",

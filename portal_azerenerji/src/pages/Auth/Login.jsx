@@ -6,11 +6,13 @@ import { Box, Button, Container, FormControl, FormLabel, Heading, Image, Input, 
 import { PasswordField } from "./PasswordField";
 import Logo from "../../images/AzerenerjiLogo.png";
 import alertify from "alertifyjs";
+import Cookies from "js-cookie";
 
 const Login = () => {
   const emailRef = useRef("");
   const passwordRef = useRef("");
   const navigate = useNavigate();
+
   const handleSubmit = (e) => {
     const email = emailRef.current.value;
     const password = passwordRef.current.value;
@@ -35,11 +37,10 @@ const Login = () => {
           }
         })
         .then((data) => {
-          // console.log(data);
           localStorage.setItem("token", data.accessToken);
           localStorage.setItem("id", data.id);
-          // setAccessToken(localStorage.getItem('token'));
-          // setId(localStorage.getItem('id'));
+          Cookies.set("token", data.accessToken, { expires: 7, secure: true });
+
           navigate(`/admin/websites`);
           alertify.success("Successfully logged in!");
         });

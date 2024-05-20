@@ -7,13 +7,13 @@ import App from "./App";
 import "./index.css";
 import "bootstrap/dist/css/bootstrap.css";
 import "alertifyjs/build/css/alertify.css";
-import { MyProvider } from "./MyContext";
+import { LoaderProvider } from "./LoaderContext";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <ChakraProvider>
-    <MyProvider>
+    <LoaderProvider>
       <App />
-    </MyProvider>
+    </LoaderProvider>
   </ChakraProvider>
 );

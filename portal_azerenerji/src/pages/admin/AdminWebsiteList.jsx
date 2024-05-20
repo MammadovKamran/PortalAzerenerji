@@ -22,11 +22,11 @@ import { EditIcon, DeleteIcon } from "@chakra-ui/icons";
 import AdminEditModal from "./AdminEditModal";
 import AdminDeleteModal from "./AdminDeleteModal";
 import LoadingPage from "../../components/LoadingPage";
-import { MyContext } from "../../MyContext";
+import { LoaderContext } from "../../LoaderContext";
 
 const AdminWebsiteList = () => {
   const [data, setData] = useState([]);
-  const { reload, setReload } = useContext(MyContext);
+  const { reload, setReload } = useContext(LoaderContext);
 
   const { onOpen: onOpenEdit, isOpen: isOpenEdit, onClose: onCloseEdit } = useDisclosure();
   const { onOpen: onOpenDelete, isOpen: isOpenDelete, onClose: onCloseDelete } = useDisclosure();
@@ -134,10 +134,10 @@ const AdminWebsiteList = () => {
                 </Flex>
               ))
             ) : (
-              // <Flex justifyContent="center" alignItems="center" height="50vh">
-              //   <h1>Website not found</h1>
-              // </Flex>
-              <LoadingPage />
+              <Flex justifyContent="center" alignItems="center" height="50vh">
+                <h1>Website not found</h1>
+              </Flex>
+              // <LoadingPage />
             )}
           </Accordion>
         </ChakraProvider>

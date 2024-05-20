@@ -1,23 +1,26 @@
 /** @format */
 
-import React, { useEffect, useState } from "react";
-import { Container, Wrap, WrapItem, Center, Image } from "@chakra-ui/react";
+import React, { useContext, useEffect, useState } from "react";
+import { Container, Wrap, WrapItem, Center, Image, Flex } from "@chakra-ui/react";
 import logo from "../images/AzerenerjiLogo-removebg-preview.png";
-
-// fetch("http://10.10.12.45:8080/api/v1/websites/find-by-id/1")
-// fetch("http://10.10.12.45:8080/api/v1/websites")
+import { LoaderContext } from "../LoaderContext";
 
 const Home = () => {
   const [data, setData] = useState([]);
+  const { reload } = useContext(LoaderContext);
 
-  useEffect(() => {
+  const fetchData = () => {
     fetch("http://10.10.12.45:8081/api/v1/websites")
       .then((res) => res.json())
       .then((data) => setData(data))
       .then((data) => console.log(data));
+  };
+  useEffect(() => {
+    fetchData();
   }, []);
-
-  console.log(data);
+  useEffect(() => {
+    fetchData();
+  }, [reload]);
 
   return (
     <>
@@ -34,22 +37,28 @@ const Home = () => {
             </Center>
           </Container>
           <Wrap spacing="50px" justify="center">
-            {data.map((item) => (
-              <WrapItem>
-                <Center>
-                  <div className="homeCard">
-                    <p className="homeHeading">{item.name}</p>
-                    {/* <p className="homeBottom">AzərEnerji ASC</p> */}
-                    <Image
-                      objectFit="contain"
-                      className="homeImage"
-                      src={`https://portalazerenerji.s3.eu-north-1.amazonaws.com/${item.image}`}
-                      alt="Azerenerji logo"
-                    />
-                  </div>
-                </Center>
-              </WrapItem>
-            ))}
+            {data && data.length > 0 ? (
+              data.map((item) => (
+                <WrapItem>
+                  <Center>
+                    <div className="homeCard">
+                      <p className="homeHeading">{item.name}</p>
+                      {/* <p className="homeBottom">AzərEnerji ASC</p> */}
+                      <Image
+                        objectFit="contain"
+                        className="homeImage"
+                        src={`https://portalazerenerji.s3.eu-north-1.amazonaws.com/${item.image}`}
+                        alt="Azerenerji logo"
+                      />
+                    </div>
+                  </Center>
+                </WrapItem>
+              ))
+            ) : (
+              <Flex justifyContent="center" alignItems="center" height="50vh">
+                <h1>Website not found</h1>
+              </Flex>
+            )}
           </Wrap>
         </Container>
       </div>
