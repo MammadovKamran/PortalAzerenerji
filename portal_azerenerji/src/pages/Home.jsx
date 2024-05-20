@@ -11,7 +11,7 @@ const Home = () => {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    fetch("http://10.10.12.45:8080/api/v1/websites")
+    fetch("http://10.10.12.45:8081/api/v1/websites")
       .then((res) => res.json())
       .then((data) => setData(data))
       .then((data) => console.log(data));

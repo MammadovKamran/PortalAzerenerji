@@ -29,11 +29,13 @@ const NavBar = () => {
 
           <Box display={{ base: "none", md: "block" }}>
             <Menu>
-              <MenuButton variant="unstyled" as={Button} rightIcon={<Avatar name="John Doe" src="https://bit.ly/dan-abramov" />} />
+              <MenuButton variant="unstyled" as={Button} rightIcon={<Avatar src="https://bit.ly/broken-link" />} />
               <MenuList>
                 <MenuGroup color="teal" title="Profile">
-                  <MenuItem color="teal">My Profile</MenuItem>
-                  <MenuItem color="teal">Log Out </MenuItem>
+                  {/* <MenuItem color="teal">My Profile</MenuItem> */}
+                  <MenuItem color="teal" onClick={(e) => localStorage.clear()}>
+                    Log Out{" "}
+                  </MenuItem>
                 </MenuGroup>
               </MenuList>
             </Menu>

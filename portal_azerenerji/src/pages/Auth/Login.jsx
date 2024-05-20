@@ -15,7 +15,7 @@ const Login = () => {
     const email = emailRef.current.value;
     const password = passwordRef.current.value;
     if (email && password) {
-      fetch("http://10.10.12.45:8080/api/v1/auth/login", {
+      fetch("http://10.10.12.45:8081/api/v1/auth/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

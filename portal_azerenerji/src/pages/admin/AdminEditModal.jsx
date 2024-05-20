@@ -1,6 +1,6 @@
 /** @format */
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   Modal,
   ModalOverlay,
@@ -15,10 +15,13 @@ import {
   Input,
   Image,
 } from "@chakra-ui/react";
+import { MyContext } from "../../MyContext";
 
-const AdminEditModal = ({ isOpen, onClose, overlay, selectedWebsite, setSelectedWebsite, setDataShouldBeFetched }) => {
+const AdminEditModal = ({ isOpen, onClose, overlay, selectedWebsite, setSelectedWebsite }) => {
   const initialRef = React.useRef(null);
   const finalRef = React.useRef(null);
+  const { setReload } = useContext(MyContext);
+
   // const [selectedWebsite, setSelectedWebsite] = useState({
   //   name: "",
   //   url: "",
@@ -32,15 +35,12 @@ const AdminEditModal = ({ isOpen, onClose, overlay, selectedWebsite, setSelected
   // }, [selectedWebsite]);
 
   const handleSave = (e) => {
-    setDataShouldBeFetched(false);
-
     if (e.target.type === "text") {
       setSelectedWebsite({ ...selectedWebsite, [e.target.name]: e.target.value });
     }
     if (e.target.type === "file") {
       setSelectedWebsite({ ...selectedWebsite, [e.target.name]: e.target.files[0].name });
     }
-    console.log(selectedWebsite);
   };
 
   const handleSubmit = (e) => {
@@ -50,11 +50,11 @@ const AdminEditModal = ({ isOpen, onClose, overlay, selectedWebsite, setSelected
       headers: { "Content-Type": "application/json", Authorization: `Bearer ${localStorage.getItem("token")}` },
       body: JSON.stringify(selectedWebsite),
     };
-    fetch(`http://10.10.12.45:8080/api/v1/websites/update/${selectedWebsite.id}`, requestOptions)
+    fetch(`http://10.10.12.45:8081/api/v1/websites/update/${selectedWebsite.id}`, requestOptions)
       .then((response) => response.json())
       .then((data) => console.log(data, "edited data"));
     onClose();
-    setDataShouldBeFetched(true);
+    setReload(true);
   };
 
   return (

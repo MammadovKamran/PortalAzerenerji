@@ -1,14 +1,16 @@
 /** @format */
 
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { ChakraProvider, FormControl, FormLabel, Input, Button, Box, Flex, Text } from "@chakra-ui/react";
 import { Image } from "@chakra-ui/react";
 import * as AWS from "aws-sdk";
 import alertify from "alertifyjs";
 import { useNavigate } from "react-router-dom";
+import { MyContext } from "../../MyContext";
 
 const AdminAddNewWebsite = () => {
   const navigate = useNavigate();
+  const { setReload } = useContext(MyContext);
   const [selectedImg, setSelectedImg] = useState(null);
   const [data, setData] = useState({
     name: "",
@@ -20,6 +22,7 @@ const AdminAddNewWebsite = () => {
     url: data.url,
     image: null,
   });
+
   const uploadFile = () => {
     if (!data.image) {
       alert("Please select a file.");
@@ -69,7 +72,7 @@ const AdminAddNewWebsite = () => {
   };
 
   const handleChange = (e) => {
-    if (e.target.type === "file") {
+    if (e.target.type === "file" && e.target.files.length > 0) {
       setData({ ...data, [e.target.name]: e.target.files[0].name });
       setAwss3({ ...awss3, [e.target.name]: e.target.files[0] });
       setSelectedImg(URL.createObjectURL(e.target.files[0]));
@@ -89,16 +92,23 @@ const AdminAddNewWebsite = () => {
       },
       body: JSON.stringify(data),
     };
-    fetch("http://10.10.12.45:8080/api/v1/websites/save", requestOptions)
+    fetch("http://10.10.12.45:8081/api/v1/websites/save", requestOptions)
       .then((response) => response.json())
       .then((data) => setData(data));
-    console.log(data);
+
+    data ? setReload(true) : setReload(false);
+
     alertify.success("Website uğurla əlavə olundu");
   };
   const handleSubmit = (e) => {
     e.preventDefault();
-    uploadFile();
-    navigate("/admin/websites");
+    if (awss3.image.type === "image/jpeg" || awss3.image.type === "image/jpg" || awss3.image.type === "image/png") {
+      uploadFile();
+      navigate("/admin/websites");
+    } else {
+      alertify.error("Please select a valid image file");
+      return;
+    }
   };
 
   return (
@@ -118,8 +128,8 @@ const AdminAddNewWebsite = () => {
               </FormControl>
 
               <FormControl id="file" mt={4} onChange={(e) => handleChange(e)}>
-                <FormLabel>Upload File</FormLabel>
-                <Input type="file" pt={1} name="image" required />
+                <FormLabel>Upload File(jpg, jpeg, png)</FormLabel>
+                <Input type="file" pt={1} name="image" required placeholder="please enter jpg and png" />
               </FormControl>
               {selectedImg ? (
                 <Text my={4}>

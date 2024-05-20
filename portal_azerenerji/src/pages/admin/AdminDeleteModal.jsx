@@ -1,17 +1,19 @@
 /** @format */
 
-import React from "react";
+import React, { useContext } from "react";
 import { AlertDialog, AlertDialogBody, AlertDialogFooter, AlertDialogHeader, AlertDialogContent, AlertDialogOverlay, Button } from "@chakra-ui/react";
-const AdminDeleteModal = ({ isOpen, onClose, overlay, website, setDataShouldBeFetched }) => {
+import { MyContext } from "../../MyContext";
+const AdminDeleteModal = ({ isOpen, onClose, overlay, website }) => {
   const cancelRef = React.useRef();
+  const { setReload } = useContext(MyContext);
 
   const handleDelete = () => {
-    setDataShouldBeFetched(false);
-    fetch(`http://10.10.12.45:8080/api/v1/websites/delete/${website.id}`, {
+    // setReload(false);
+    fetch(`http://10.10.12.45:8081/api/v1/websites/delete/${website.id}`, {
       method: "DELETE",
     }).then(() => console.log("Delete successful"));
     onClose();
-    setDataShouldBeFetched(true);
+    setReload(true);
   };
 
   return (
