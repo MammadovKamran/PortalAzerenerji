@@ -4,6 +4,7 @@ import React from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import { ChakraProvider, Box, Flex, Heading, Button, Avatar, Menu, MenuButton, MenuList, MenuGroup, MenuItem } from "@chakra-ui/react";
 // import { HamburgerIcon } from '@chakra-ui/icons';
+import Cookies from "js-cookie";
 
 const NavBar = () => {
   const location = useLocation().pathname;
@@ -41,7 +42,7 @@ const NavBar = () => {
                 </MenuGroup>
               </MenuList>
             </Menu> */}
-            <NavLink to="/admin" onClick={(e) => localStorage.clear()}>
+            <NavLink to="/admin" onClick={(e) => Cookies.remove("token")}>
               Log Out
             </NavLink>
           </Box>

@@ -7,21 +7,22 @@ import { LoaderContext } from "../LoaderContext";
 
 const Home = () => {
   const [data, setData] = useState([]);
-  const { reload } = useContext(LoaderContext);
+  const { reload, setReload } = useContext(LoaderContext);
 
   const fetchData = () => {
     fetch("http://10.10.12.45:8081/api/v1/websites")
       .then((res) => res.json())
-      .then((data) => setData(data))
-      .then((data) => console.log(data));
+      .then((data) => setData(data));
   };
   useEffect(() => {
     fetchData();
   }, []);
+
   useEffect(() => {
     fetchData();
-  }, [reload]);
+  }, [reload, setReload]);
 
+  console.log(reload);
   return (
     <>
       <div className="backgroundImage">
@@ -47,6 +48,8 @@ const Home = () => {
                       <Image
                         objectFit="contain"
                         className="homeImage"
+                        w={20}
+                        h={10}
                         src={`https://portalazerenerji.s3.eu-north-1.amazonaws.com/${item.image}`}
                         alt="Azerenerji logo"
                       />

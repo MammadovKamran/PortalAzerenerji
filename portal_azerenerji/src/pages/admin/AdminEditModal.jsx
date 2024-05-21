@@ -1,6 +1,6 @@
 /** @format */
 
-import React, { useState, useEffect, useContext } from "react";
+import React, { useContext } from "react";
 import {
   Modal,
   ModalOverlay,
@@ -16,23 +16,13 @@ import {
   Image,
 } from "@chakra-ui/react";
 import { LoaderContext } from "../../LoaderContext";
+import Cookies from "js-cookie";
+import alertify from "alertifyjs";
 
 const AdminEditModal = ({ isOpen, onClose, overlay, selectedWebsite, setSelectedWebsite }) => {
   const initialRef = React.useRef(null);
   const finalRef = React.useRef(null);
   const { setReload } = useContext(LoaderContext);
-
-  // const [selectedWebsite, setSelectedWebsite] = useState({
-  //   name: "",
-  //   url: "",
-  //   image: "",
-  // });
-
-  // useEffect(() => {
-  //   if (selectedWebsite) {
-  //     setSelectedWebsite({ id: selectedWebsite.id, name: selectedWebsite.name, url: selectedWebsite.url || "", image: selectedWebsite.image || {} });
-  //   }
-  // }, [selectedWebsite]);
 
   const handleSave = (e) => {
     if (e.target.type === "text") {
@@ -42,17 +32,29 @@ const AdminEditModal = ({ isOpen, onClose, overlay, selectedWebsite, setSelected
       setSelectedWebsite({ ...selectedWebsite, [e.target.name]: e.target.files[0].name });
     }
   };
-
+  const putData = () => {
+    try {
+      const requestOptions = {
+        method: "PUT",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${Cookies.get("token")}` },
+        body: JSON.stringify(selectedWebsite),
+      };
+      fetch(`http://10.10.12.45:8081/api/v1/websites/update/${selectedWebsite.id}`, requestOptions)
+        .then((res) => {
+          if (!res.ok) {
+            throw new Error("Network response was not ok");
+          }
+          return res.json();
+        })
+        .catch((error) => {
+          alertify.error("There was a problem with the fetch operation:", error);
+        });
+    } catch (error) {
+      alertify.error("There was a problem with the fetch operation:", error);
+    }
+  };
   const handleSubmit = (e) => {
-    e.preventDefault();
-    const requestOptions = {
-      method: "PUT",
-      headers: { "Content-Type": "application/json", Authorization: `Bearer ${localStorage.getItem("token")}` },
-      body: JSON.stringify(selectedWebsite),
-    };
-    fetch(`http://10.10.12.45:8081/api/v1/websites/update/${selectedWebsite.id}`, requestOptions)
-      .then((response) => response.json())
-      .then((data) => console.log(data, "edited data"));
+    putData();
     onClose();
     setReload(true);
   };
@@ -84,7 +86,12 @@ const AdminEditModal = ({ isOpen, onClose, overlay, selectedWebsite, setSelected
             </FormControl>
             <FormControl mt={4}>
               <FormLabel>Website image</FormLabel>
-              <Image boxSize="100px" objectFit="cover" />
+              <Image
+                alt={selectedWebsite.name}
+                boxSize="100px"
+                objectFit="contain"
+                src={`https://portalazerenerji.s3.eu-north-1.amazonaws.com/${selectedWebsite.image}`}
+              />
               <Input mt={4} py="1" type="file" required name="image" placeholder="Website URL" onChange={(e) => handleSave(e)} />
             </FormControl>
           </ModalBody>

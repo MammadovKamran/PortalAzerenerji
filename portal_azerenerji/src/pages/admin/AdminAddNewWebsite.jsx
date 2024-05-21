@@ -7,16 +7,13 @@ import * as AWS from "aws-sdk";
 import alertify from "alertifyjs";
 import { useNavigate } from "react-router-dom";
 import { LoaderContext } from "../../LoaderContext";
+import Cookies from "js-cookie";
 
 const AdminAddNewWebsite = () => {
   const navigate = useNavigate();
   const { setReload } = useContext(LoaderContext);
   const [selectedImg, setSelectedImg] = useState(null);
-  const [data, setData] = useState({
-    name: "",
-    url: "",
-    image: "",
-  });
+  const [data, setData] = useState({});
   const [awss3, setAwss3] = useState({
     name: data.name,
     url: data.url,
@@ -78,27 +75,34 @@ const AdminAddNewWebsite = () => {
       setSelectedImg(URL.createObjectURL(e.target.files[0]));
       return;
     } else {
-      setAwss3({ ...awss3, [e.target.name]: e.target.value });
       setData({ ...data, [e.target.name]: e.target.value });
       return;
     }
   };
   const postWebsite = () => {
-    const requestOptions = {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-      body: JSON.stringify(data),
-    };
-    fetch("http://10.10.12.45:8081/api/v1/websites/save", requestOptions)
-      .then((response) => response.json())
-      .then((data) => setData(data));
+    try {
+      const requestOptions = {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${Cookies.get("token")}`,
+        },
+        body: JSON.stringify(data),
+      };
+      fetch("http://10.10.12.45:8081/api/v1/websites/save", requestOptions)
+        .then((res) => {
+          if (!res.ok) {
+            throw new Error("Network response was not ok");
+          }
+          return res.json();
+        })
+        .then((data) => setData(data));
+      data ? setReload(true) : setReload(false);
 
-    data ? setReload(true) : setReload(false);
-
-    alertify.success("Website uğurla əlavə olundu");
+      alertify.success("Website uğurla əlavə olundu");
+    } catch (error) {
+      alertify.error("There was a problem with the fetch operation:", error);
+    }
   };
   const handleSubmit = (e) => {
     e.preventDefault();

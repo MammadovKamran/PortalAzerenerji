@@ -3,14 +3,27 @@
 import React, { useContext } from "react";
 import { AlertDialog, AlertDialogBody, AlertDialogFooter, AlertDialogHeader, AlertDialogContent, AlertDialogOverlay, Button } from "@chakra-ui/react";
 import { LoaderContext } from "../../LoaderContext";
+import { alertify } from "alertifyjs";
 const AdminDeleteModal = ({ isOpen, onClose, overlay, website }) => {
   const cancelRef = React.useRef();
   const { setReload } = useContext(LoaderContext);
 
   const handleDelete = () => {
-    fetch(`http://10.10.12.45:8081/api/v1/websites/delete/${website.id}`, {
-      method: "DELETE",
-    }).then(() => console.log("Delete successful"));
+    try {
+      fetch(`http://10.10.12.45:8081/api/v1/websites/delete/${website.id}`, {
+        method: "DELETE",
+      }).then((res) => {
+        if (!res.ok) {
+          throw new Error("Network response was not ok");
+        } else {
+          alertify.success("Website deleted successfully");
+          return res.json();
+        }
+      });
+    } catch (error) {
+      alertify.error("There was a problem with the fetch operation:", error);
+    }
+
     onClose();
     setReload(true);
   };

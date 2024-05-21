@@ -23,6 +23,7 @@ import AdminEditModal from "./AdminEditModal";
 import AdminDeleteModal from "./AdminDeleteModal";
 import LoadingPage from "../../components/LoadingPage";
 import { LoaderContext } from "../../LoaderContext";
+import alertify from "alertifyjs";
 
 const AdminWebsiteList = () => {
   const [data, setData] = useState([]);
@@ -39,9 +40,21 @@ const AdminWebsiteList = () => {
   });
 
   const fetchData = () => {
-    fetch("http://10.10.12.45:8081/api/v1/websites")
-      .then((res) => res.json())
-      .then((data) => setData(data));
+    try {
+      fetch("http://10.10.12.45:8081/api/v1/websites")
+        .then((res) => {
+          if (!res.ok) {
+            throw new Error("Network response was not ok");
+          }
+          return res.json();
+        })
+        .then((data) => setData(data))
+        .catch((error) => {
+          alertify.error("There was a problem with the fetch operation:", error);
+        });
+    } catch (error) {
+      alertify.error("There was a problem with the fetch operation:", error);
+    }
   };
 
   useEffect(() => {
@@ -53,7 +66,7 @@ const AdminWebsiteList = () => {
       fetchData();
       setReload(false);
     }
-  }, [setReload, reload]);
+  }, [reload, setReload]);
 
   const sendEditModal = (website) => {
     setSelectedWebsite(website);
@@ -78,7 +91,7 @@ const AdminWebsiteList = () => {
             selectedWebsite={selectedWebsite}
             setSelectedWebsite={setSelectedWebsite}
           />
-          <AdminDeleteModal isOpen={isOpenDelete} onClose={onCloseDelete} overlay={overlay} website={selectedWebsite}  />
+          <AdminDeleteModal isOpen={isOpenDelete} onClose={onCloseDelete} overlay={overlay} website={selectedWebsite} />
           <Accordion allowMultiple>
             {data && data.length > 0 ? (
               data.map((item) => (

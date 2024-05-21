@@ -37,8 +37,8 @@ const Login = () => {
           }
         })
         .then((data) => {
-          localStorage.setItem("token", data.accessToken);
-          localStorage.setItem("id", data.id);
+          // localStorage.setItem("token", data.accessToken);
+          // localStorage.setItem("id", data.id);
           Cookies.set("token", data.accessToken, { expires: 7, secure: true });
 
           navigate(`/admin/websites`);

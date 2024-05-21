@@ -34,7 +34,11 @@ const routes = createBrowserRouter([
       },
       {
         path: "create_new_website",
-        element: <AdminCreateWebsite />,
+        element: (
+          <PrivateRoute>
+            <AdminCreateWebsite />
+          </PrivateRoute>
+        ),
       },
     ],
   },
