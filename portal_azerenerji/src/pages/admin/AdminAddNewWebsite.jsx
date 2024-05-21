@@ -14,11 +14,7 @@ const AdminAddNewWebsite = () => {
   const { setReload } = useContext(LoaderContext);
   const [selectedImg, setSelectedImg] = useState(null);
   const [data, setData] = useState({});
-  const [awss3, setAwss3] = useState({
-    name: data.name,
-    url: data.url,
-    image: null,
-  });
+  const [awss3, setAwss3] = useState({});
 
   const uploadFile = () => {
     if (!data.image) {
@@ -55,7 +51,7 @@ const AdminAddNewWebsite = () => {
     s3.putObject(params)
       .on("httpUploadProgress", (evt) => {
         // Dosya yükleme ilerlemesi
-        // console.log("Yükleniyor " + parseInt((evt.loaded * 100) / evt.total) + "%");
+        console.log("Loading... " + parseInt((evt.loaded * 100) / evt.total) + "%");
       })
       .promise()
       .then((data) => {
@@ -79,6 +75,18 @@ const AdminAddNewWebsite = () => {
       return;
     }
   };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (awss3.image.type === "image/jpeg" || awss3.image.type === "image/jpg" || awss3.image.type === "image/png") {
+      uploadFile();
+      navigate("/admin/websites");
+    } else {
+      alertify.error("Please select a valid image file");
+      return;
+    }
+  };
+
   const postWebsite = () => {
     try {
       const requestOptions = {
@@ -102,16 +110,6 @@ const AdminAddNewWebsite = () => {
       alertify.success("Website uğurla əlavə olundu");
     } catch (error) {
       alertify.error("There was a problem with the fetch operation:", error);
-    }
-  };
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (awss3.image.type === "image/jpeg" || awss3.image.type === "image/jpg" || awss3.image.type === "image/png") {
-      uploadFile();
-      navigate("/admin/websites");
-    } else {
-      alertify.error("Please select a valid image file");
-      return;
     }
   };
 

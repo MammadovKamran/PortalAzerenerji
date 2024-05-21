@@ -22,7 +22,6 @@ const Home = () => {
     fetchData();
   }, [reload, setReload]);
 
-  console.log(reload);
   return (
     <>
       <div className="backgroundImage">

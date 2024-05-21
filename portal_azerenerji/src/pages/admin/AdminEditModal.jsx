@@ -32,6 +32,13 @@ const AdminEditModal = ({ isOpen, onClose, overlay, selectedWebsite, setSelected
       setSelectedWebsite({ ...selectedWebsite, [e.target.name]: e.target.files[0].name });
     }
   };
+
+  const handleSubmit = (e) => {
+    putData();
+    onClose();
+    setReload(true);
+  };
+
   const putData = () => {
     try {
       const requestOptions = {
@@ -52,11 +59,6 @@ const AdminEditModal = ({ isOpen, onClose, overlay, selectedWebsite, setSelected
     } catch (error) {
       alertify.error("There was a problem with the fetch operation:", error);
     }
-  };
-  const handleSubmit = (e) => {
-    putData();
-    onClose();
-    setReload(true);
   };
 
   return (

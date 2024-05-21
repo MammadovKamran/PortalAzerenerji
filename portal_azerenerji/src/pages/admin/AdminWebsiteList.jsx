@@ -21,7 +21,6 @@ import { EditIcon, DeleteIcon } from "@chakra-ui/icons";
 // import alertify from "alertifyjs";
 import AdminEditModal from "./AdminEditModal";
 import AdminDeleteModal from "./AdminDeleteModal";
-import LoadingPage from "../../components/LoadingPage";
 import { LoaderContext } from "../../LoaderContext";
 import alertify from "alertifyjs";
 
@@ -150,7 +149,6 @@ const AdminWebsiteList = () => {
               <Flex justifyContent="center" alignItems="center" height="50vh">
                 <h1>Website not found</h1>
               </Flex>
-              // <LoadingPage />
             )}
           </Accordion>
         </ChakraProvider>
