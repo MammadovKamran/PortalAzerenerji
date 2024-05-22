@@ -3,7 +3,6 @@
 import React from "react";
 import { Link, NavLink } from "react-router-dom";
 import { ChakraProvider, Box, Flex, Heading } from "@chakra-ui/react";
-// import { HamburgerIcon } from '@chakra-ui/icons';
 import Cookies from "js-cookie";
 
 const NavBar = () => {
@@ -13,6 +12,9 @@ const NavBar = () => {
         <Flex alignItems="center" justifyContent="space-between">
           <Heading size="lg">
             <Link to="/admin/websites">Admin Panel</Link>
+            <Link to="/" style={{ paddingLeft: "50px", fontSize: "20px", fontWeight: "400" }}>
+              Home
+            </Link>
           </Heading>
 
           <Box display={{ base: "none", md: "block" }} w="2xl">
@@ -28,7 +30,7 @@ const NavBar = () => {
 
           <Box display={{ base: "none", md: "block" }} fontSize="xl">
             <NavLink to="/admin" onClick={(e) => Cookies.remove("token")}>
-              Log Out
+              Log out
             </NavLink>
           </Box>
         </Flex>

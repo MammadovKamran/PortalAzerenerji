@@ -13,11 +13,18 @@ const Login = () => {
   const passwordRef = useRef("");
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     const email = emailRef.current.value;
     const password = passwordRef.current.value;
-    if (email && password) {
-      fetch("http://10.10.12.45:8081/api/v1/auth/login", {
+
+    if (!email || !password) {
+      alertify.error("Please enter your email or password!");
+      return;
+    }
+
+    try {
+      const response = await fetch("http://10.10.12.45:8081/api/v1/auth/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -27,25 +34,23 @@ const Login = () => {
           password: password,
           rememberMe: false,
         }),
-      })
-        .then((response) => {
-          if (response.status === 401) {
-            alertify.error("Please enter your email or password!");
-            navigate("/admin");
-          } else if (response.status === 200) {
-            return response.json();
-          }
-        })
-        .then((data) => {
-          Cookies.set("token", data.accessToken, { expires: 7, secure: true });
+      });
 
-          navigate(`/admin/websites`);
-          alertify.success("Successfully logged in!");
-        });
-    } else {
-      alertify.error("Please enter your email or password!");
+      if (response.status === 401) {
+        alertify.error("Invalid email or password!");
+        navigate("/admin");
+      } else if (response.status === 200) {
+        const data = await response.json();
+        Cookies.set("token", data.accessToken, { expires: 7, secure: true });
+        alertify.success("Successfully logged in!");
+        navigate("/admin/websites");
+      } else {
+        alertify.error("An unexpected error occurred. Please try again later.");
+      }
+    } catch (error) {
+      console.error("Login error:", error);
+      alertify.error("An error occurred while logging in. Please check your network connection and try again.");
     }
-    e.preventDefault();
   };
 
   return (
