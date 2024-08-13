@@ -41,7 +41,9 @@ const Login = () => {
         navigate("/admin");
       } else if (response.status === 200) {
         const data = await response.json();
-        Cookies.set("token", data.accessToken, { expires: 7, secure: true });
+        Cookies.set("id", data.id);
+        Cookies.set("token", data.accessToken, { expires: 1 / 24, secure: true, httpOnly: true });
+        Cookies.set("refreshToken", data.refreshToken, { expires: 7, secure: true, httpOnly: true });
         alertify.success("Successfully logged in!");
         navigate("/admin/websites");
       } else {
@@ -76,7 +78,7 @@ const Login = () => {
                 <Stack spacing="5">
                   <FormControl>
                     <FormLabel htmlFor="text">Email</FormLabel>
-                    <Input id="email" type="email" ref={emailRef} required />
+                    <Input id="email" type="email" autoComplete="email" ref={emailRef} required />
                   </FormControl>
                   <PasswordField ref={passwordRef} required />
                 </Stack>
@@ -88,6 +90,7 @@ const Login = () => {
               </form>
             </Stack>
           </Box>
+          Box{" "}
         </Stack>
       </Container>
     </>

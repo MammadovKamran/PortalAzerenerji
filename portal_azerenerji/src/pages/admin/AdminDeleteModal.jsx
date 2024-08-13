@@ -4,28 +4,29 @@ import React, { useContext } from "react";
 import { AlertDialog, AlertDialogBody, AlertDialogFooter, AlertDialogHeader, AlertDialogContent, AlertDialogOverlay, Button } from "@chakra-ui/react";
 import { LoaderContext } from "../../LoaderContext";
 import { alertify } from "alertifyjs";
+import Cookies from "js-cookie";
+
 const AdminDeleteModal = ({ isOpen, onClose, overlay, website }) => {
   const cancelRef = React.useRef();
-  const { setReload } = useContext(LoaderContext);
+  const {  setReload } = useContext(LoaderContext);
 
   const handleDelete = () => {
     try {
       fetch(`http://10.10.12.45:8081/api/v1/websites/delete/${website.id}`, {
         method: "DELETE",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${Cookies.get("token")}` },
       }).then((res) => {
         if (!res.ok) {
-          throw new Error("Network response was not ok");
-        } else {
-          alertify.success("Website deleted successfully");
-          return res.json();
+          return res.json().then((errorData) => {
+            throw new Error(errorData.error || `Silme işlemi başarısız oldu, Durum Kodu: ${res.status}`);
+          });
         }
+        setReload(true);
       });
     } catch (error) {
       alertify.error("There was a problem with the fetch operation:", error);
     }
-
     onClose();
-    setReload(true);
   };
 
   return (

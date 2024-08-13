@@ -9,8 +9,8 @@ const Background = () => {
     // 	margin: "0",
     // },
     svg: {
-       position: "absolute",
-      zIndex:"-100",
+      position: "absolute",
+      zIndex: "-100",
       top: 0,
       left: 0,
       width: "100%",
@@ -22,7 +22,14 @@ const Background = () => {
     },
   };
   return (
-    <svg style={styles.svg} xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" x="0" y="0" preserveAspectRatio="xMidYMax slice" viewBox="0 0 1600 900">
+    <svg
+      style={styles.svg}
+      xmlns="http://www.w3.org/2000/svg"
+      xmlnsXlink="http://www.w3.org/1999/xlink"
+      x="0"
+      y="0"
+      preserveAspectRatio="xMidYMax slice"
+      viewBox="0 0 1600 900">
       <defs>
         <linearGradient id="bg">
           <stop offset="0%" stopColor="rgba(130, 158, 249, 0.06)"></stop>

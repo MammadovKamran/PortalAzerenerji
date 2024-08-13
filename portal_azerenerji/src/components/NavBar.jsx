@@ -1,20 +1,25 @@
 /** @format */
 
 import React from "react";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useLocation } from "react-router-dom";
 import { ChakraProvider, Box, Flex, Heading } from "@chakra-ui/react";
 import Cookies from "js-cookie";
 
 const NavBar = () => {
+  const location = useLocation();
   return (
     <ChakraProvider>
       <Box bg="blue.600" color="white" py="4" px="16">
         <Flex alignItems="center" justifyContent="space-between">
           <Heading size="lg">
-            <Link to="/admin/websites">Admin Panel</Link>
-            <Link to="/" style={{ paddingLeft: "50px", fontSize: "20px", fontWeight: "400" }}>
+            <NavLink to="/admin/websites">Admin Panel</NavLink>
+
+            <NavLink to="/" style={{ paddingLeft: "50px", fontSize: "20px", fontWeight: "400" }}>
               Home
-            </Link>
+            </NavLink>
+            <NavLink to="/admin/websites" style={{ paddingLeft: "50px", fontSize: "20px", fontWeight: "400" }}>
+              Admin Panel
+            </NavLink>
           </Heading>
 
           <Box display={{ base: "none", md: "block" }} w="2xl">
@@ -29,7 +34,7 @@ const NavBar = () => {
           </Box>
 
           <Box display={{ base: "none", md: "block" }} fontSize="xl">
-            <NavLink to="/admin" onClick={(e) => Cookies.remove("token")}>
+            <NavLink to="/admin" onClick={(e) => Cookies.remove("token", "refreshToken", "id")}>
               Log out
             </NavLink>
           </Box>

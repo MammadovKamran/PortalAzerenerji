@@ -9,7 +9,7 @@ import "bootstrap/dist/css/bootstrap.css";
 import "alertifyjs/build/css/alertify.css";
 import { LoaderProvider } from "./LoaderContext";
 
-const root = ReactDOM.createRoot(document.getElementById("root"));
+const root = ReactDOM.createRoot(document.getElementById("root") );
 root.render(
   <ChakraProvider>
     <LoaderProvider>

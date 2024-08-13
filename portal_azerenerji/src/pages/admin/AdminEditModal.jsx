@@ -13,11 +13,11 @@ import {
   FormControl,
   FormLabel,
   Input,
-  Image,
 } from "@chakra-ui/react";
 import { LoaderContext } from "../../LoaderContext";
 import Cookies from "js-cookie";
 import alertify from "alertifyjs";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const AdminEditModal = ({ isOpen, onClose, overlay, selectedWebsite, setSelectedWebsite }) => {
   const initialRef = React.useRef(null);
@@ -25,32 +25,55 @@ const AdminEditModal = ({ isOpen, onClose, overlay, selectedWebsite, setSelected
   const { setReload } = useContext(LoaderContext);
 
   const handleSave = (e) => {
-    if (e.target.type === "text") {
-      setSelectedWebsite({ ...selectedWebsite, [e.target.name]: e.target.value });
-    }
-    if (e.target.type === "file") {
-      setSelectedWebsite({ ...selectedWebsite, [e.target.name]: e.target.files[0].name });
+    const { name, value } = e.target;
+
+    if (name === "lib") {
+      setSelectedWebsite((prev) => ({
+        ...prev,
+        image: {
+          ...prev.image,
+          lib: value,
+        },
+      }));
+    } else if (name === "icon") {
+      setSelectedWebsite((prev) => ({
+        ...prev,
+        image: {
+          ...prev.image,
+          icon: value,
+        },
+      }));
+    } else {
+      setSelectedWebsite((prev) => ({
+        ...prev,
+        [name]: value,
+      }));
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = () => {
     putData();
     onClose();
-    setReload(true);
   };
 
   const putData = () => {
     try {
+      const updatedWebsite = {
+        ...selectedWebsite,
+        image: `${selectedWebsite.image.lib} ${selectedWebsite.image.icon}`, // Combine lib and icon
+      };
       const requestOptions = {
         method: "PUT",
         headers: { "Content-Type": "application/json", Authorization: `Bearer ${Cookies.get("token")}` },
-        body: JSON.stringify(selectedWebsite),
+        body: JSON.stringify(updatedWebsite),
       };
+
       fetch(`http://10.10.12.45:8081/api/v1/websites/update/${selectedWebsite.id}`, requestOptions)
         .then((res) => {
           if (!res.ok) {
             throw new Error("Network response was not ok");
           }
+          setReload(true);
           return res.json();
         })
         .catch((error) => {
@@ -62,51 +85,51 @@ const AdminEditModal = ({ isOpen, onClose, overlay, selectedWebsite, setSelected
   };
 
   return (
-    <>
-      <Modal
-        closeOnOverlayClick={false}
-        isCentered
-        initialFocusRef={initialRef}
-        finalFocusRef={finalRef}
-        isOpen={isOpen}
-        onClose={onClose}
-        size={"xl"}>
-        {overlay}
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>Create your account</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody pb={6}>
-            <FormControl>
-              <FormLabel>Website name</FormLabel>
-              <Input ref={initialRef} name="name" placeholder="Website name" value={selectedWebsite.name} onChange={(e) => handleSave(e)} />
-            </FormControl>
+    <Modal closeOnOverlayClick={false} isCentered initialFocusRef={initialRef} finalFocusRef={finalRef} isOpen={isOpen} onClose={onClose} size={"xl"}>
+      {overlay}
+      <ModalOverlay />
+      <ModalContent>
+        <ModalHeader>Edit Website</ModalHeader>
+        <ModalCloseButton />
+        <ModalBody pb={6}>
+          <FormControl>
+            <FormLabel>Website Name</FormLabel>
+            <Input ref={initialRef} name="name" placeholder="Website name" value={selectedWebsite.name} onChange={handleSave} />
+          </FormControl>
 
-            <FormControl mt={4}>
-              <FormLabel>Website URL</FormLabel>
-              <Input placeholder="Website URL" name="url" value={selectedWebsite.url} onChange={(e) => handleSave(e)} />
-            </FormControl>
-            <FormControl mt={4}>
-              <FormLabel>Website image</FormLabel>
-              <Image
-                alt={selectedWebsite.name}
-                boxSize="100px"
-                objectFit="contain"
-                src={`https://portalazerenerji.s3.eu-north-1.amazonaws.com/${selectedWebsite.image}`}
-              />
-              <Input mt={4} py="1" type="file" required name="image" placeholder="Website URL" onChange={(e) => handleSave(e)} />
-            </FormControl>
-          </ModalBody>
+          <FormControl mt={4}>
+            <FormLabel>Website URL</FormLabel>
+            <Input name="url" placeholder="Website URL" value={selectedWebsite.url} onChange={handleSave} />
+          </FormControl>
 
-          <ModalFooter>
-            <Button colorScheme="blue" mr={3} onClick={handleSubmit}>
-              Save
-            </Button>
-            <Button onClick={onClose}>Cancel</Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
-    </>
+          <FormControl mt={4}>
+            <FormLabel>Icon Library</FormLabel>
+            <Input name="lib" placeholder="Library (e.g., fa-solid)" value={selectedWebsite.image.lib} onChange={handleSave} />
+          </FormControl>
+
+          <FormControl mt={4}>
+            <FormLabel>Icon Name</FormLabel>
+            <Input name="icon" placeholder="Icon Name (e.g., fa-hippo)" value={selectedWebsite.image.icon} onChange={handleSave} />
+          </FormControl>
+
+          <FormControl mt={4}>
+            <FormLabel>Preview Icon</FormLabel>
+            {selectedWebsite.image.lib && selectedWebsite.image.icon ? (
+              <FontAwesomeIcon icon={[selectedWebsite.image.lib, selectedWebsite.image.icon]} size="2x" />
+            ) : (
+              <p>Icon not available</p>
+            )}
+          </FormControl>
+        </ModalBody>
+
+        <ModalFooter>
+          <Button colorScheme="blue" mr={3} onClick={handleSubmit}>
+            Save
+          </Button>
+          <Button onClick={onClose}>Cancel</Button>
+        </ModalFooter>
+      </ModalContent>
+    </Modal>
   );
 };
 

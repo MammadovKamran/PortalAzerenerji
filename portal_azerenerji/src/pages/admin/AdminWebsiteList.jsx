@@ -9,7 +9,6 @@ import {
   AccordionPanel,
   AccordionIcon,
   Box,
-  Image,
   Container,
   Button,
   ModalOverlay,
@@ -18,11 +17,16 @@ import {
   ButtonGroup,
 } from "@chakra-ui/react";
 import { EditIcon, DeleteIcon } from "@chakra-ui/icons";
-// import alertify from "alertifyjs";
 import AdminEditModal from "./AdminEditModal";
 import AdminDeleteModal from "./AdminDeleteModal";
 import { LoaderContext } from "../../LoaderContext";
 import alertify from "alertifyjs";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { library } from "@fortawesome/fontawesome-svg-core";
+import { fas } from "@fortawesome/free-solid-svg-icons";  
+import { far } from "@fortawesome/free-regular-svg-icons"; 
+import { fab } from "@fortawesome/free-brands-svg-icons"; 
+library.add(fas, far, fab);
 
 const AdminWebsiteList = () => {
   const [data, setData] = useState([]);
@@ -47,7 +51,13 @@ const AdminWebsiteList = () => {
           }
           return res.json();
         })
-        .then((data) => setData(data))
+        .then((data) => {
+          const formattedData = data.map((item) => {
+            const parts = item.image.split(" ");
+            return { ...item, image: { lib: parts[0], icon: parts[1] } };
+          });
+          setData(formattedData);
+        })
         .catch((error) => {
           alertify.error("There was a problem with the fetch operation:", error);
         });
@@ -55,7 +65,6 @@ const AdminWebsiteList = () => {
       alertify.error("There was a problem with the fetch operation:", error);
     }
   };
-
   useEffect(() => {
     fetchData();
   }, []);
@@ -78,7 +87,6 @@ const AdminWebsiteList = () => {
     setOverlay(<OverlayOne />);
     onOpenDelete();
   };
-
   return (
     <>
       <Container minWidth="6xl" mt="20" mb="20">
@@ -114,7 +122,6 @@ const AdminWebsiteList = () => {
                         <AccordionIcon />
                       </AccordionButton>
                     </Flex>
-
                     <AccordionPanel pb={4}>
                       <Flex justifyContent="space-between" alignItems="center" mr="50">
                         <a href={item.url} target="_blank" rel="noopener noreferrer">
@@ -126,12 +133,11 @@ const AdminWebsiteList = () => {
                             {item.url}
                           </h2>
                         </a>
-                        <Image
-                          alt={item.name}
-                          boxSize="100px"
-                          objectFit="contain"
-                          src={`https://portalazerenerji.s3.eu-north-1.amazonaws.com/${item.image}`}
-                        />
+                        {item.image.lib && item.image.icon ? (
+                          <FontAwesomeIcon icon={[item.image.lib, item.image.icon]} size="2x" />
+                        ) : (
+                          <p>Icon not available</p>
+                        )}
                       </Flex>
                     </AccordionPanel>
                   </AccordionItem>
