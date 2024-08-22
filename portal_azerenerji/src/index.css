@@ -20,12 +20,12 @@ body {
 
   .homeContainer {
     position: absolute;
-    top: 40%;
+    top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     overflow-y: scroll;
     max-height: calc(100vh - 40px);
-    padding: 20px;
+    /* padding: 20px; */
 
     .cardHomeLogo {
       position: relative;

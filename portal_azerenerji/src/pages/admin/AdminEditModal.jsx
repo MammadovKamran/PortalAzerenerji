@@ -68,7 +68,7 @@ const AdminEditModal = ({ isOpen, onClose, overlay, selectedWebsite, setSelected
         body: JSON.stringify(updatedWebsite),
       };
 
-      fetch(`http://10.10.12.45:8081/api/v1/websites/update/${selectedWebsite.id}`, requestOptions)
+      fetch(`https://bportal.azerenerji.az/api/v1/websites/update/${selectedWebsite.id}`, requestOptions)
         .then((res) => {
           if (!res.ok) {
             throw new Error("Network response was not ok");

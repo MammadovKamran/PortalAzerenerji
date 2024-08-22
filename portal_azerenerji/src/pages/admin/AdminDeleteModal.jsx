@@ -12,7 +12,7 @@ const AdminDeleteModal = ({ isOpen, onClose, overlay, website }) => {
 
   const handleDelete = () => {
     try {
-      fetch(`http://10.10.12.45:8081/api/v1/websites/delete/${website.id}`, {
+      fetch(`https://bportal.azerenerji.az/api/v1/websites/delete/${website.id}`, {
         method: "DELETE",
         headers: { "Content-Type": "application/json", Authorization: `Bearer ${Cookies.get("token")}` },
       }).then((res) => {

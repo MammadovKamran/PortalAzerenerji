@@ -23,9 +23,10 @@ import { LoaderContext } from "../../LoaderContext";
 import alertify from "alertifyjs";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { library } from "@fortawesome/fontawesome-svg-core";
-import { fas } from "@fortawesome/free-solid-svg-icons";  
-import { far } from "@fortawesome/free-regular-svg-icons"; 
-import { fab } from "@fortawesome/free-brands-svg-icons"; 
+import { fas } from "@fortawesome/free-solid-svg-icons";
+import { far } from "@fortawesome/free-regular-svg-icons";
+import { fab } from "@fortawesome/free-brands-svg-icons";
+
 library.add(fas, far, fab);
 
 const AdminWebsiteList = () => {
@@ -44,7 +45,7 @@ const AdminWebsiteList = () => {
 
   const fetchData = () => {
     try {
-      fetch("http://10.10.12.45:8081/api/v1/websites")
+      fetch("https://bportal.azerenerji.az/api/v1/websites")
         .then((res) => {
           if (!res.ok) {
             throw new Error("Network response was not ok");

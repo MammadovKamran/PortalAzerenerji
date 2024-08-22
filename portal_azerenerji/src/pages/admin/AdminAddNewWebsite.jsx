@@ -39,7 +39,7 @@ const AdminAddNewWebsite = () => {
         },
         body: JSON.stringify(data),
       };
-      fetch("http://10.10.12.45:8081/api/v1/websites/save", requestOptions)
+      fetch("https://bportal.azerenerji.az/api/v1/websites/save", requestOptions)
         .then((res) => {
           if (!res.ok) {
             throw new Error("Network response was not ok");

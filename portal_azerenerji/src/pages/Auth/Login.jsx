@@ -42,10 +42,10 @@ const Login = () => {
       } else if (response.status === 200) {
         const data = await response.json();
         Cookies.set("id", data.id);
-        Cookies.set("token", data.accessToken, { expires: 1 / 24, secure: true, httpOnly: true });
-        Cookies.set("refreshToken", data.refreshToken, { expires: 7, secure: true, httpOnly: true });
+        Cookies.set("token", data.accessToken, { expires: 1 / 24, secure: true });
+        Cookies.set("refreshToken", data.refreshToken, { expires: 7, secure: true });
         alertify.success("Successfully logged in!");
-        navigate("/admin/websites");
+        navigate("/admin/websites", { replace: true });
       } else {
         alertify.error("An unexpected error occurred. Please try again later.");
       }

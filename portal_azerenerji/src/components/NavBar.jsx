@@ -1,12 +1,11 @@
 /** @format */
 
 import React from "react";
-import { Link, NavLink, useLocation } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { ChakraProvider, Box, Flex, Heading } from "@chakra-ui/react";
 import Cookies from "js-cookie";
 
 const NavBar = () => {
-  const location = useLocation();
   return (
     <ChakraProvider>
       <Box bg="blue.600" color="white" py="4" px="16">
@@ -16,9 +15,6 @@ const NavBar = () => {
 
             <NavLink to="/" style={{ paddingLeft: "50px", fontSize: "20px", fontWeight: "400" }}>
               Home
-            </NavLink>
-            <NavLink to="/admin/websites" style={{ paddingLeft: "50px", fontSize: "20px", fontWeight: "400" }}>
-              Admin Panel
             </NavLink>
           </Heading>
 

@@ -10,8 +10,8 @@ import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { fas } from "@fortawesome/free-solid-svg-icons";
-import { far } from "@fortawesome/free-regular-svg-icons"; 
-import { fab } from "@fortawesome/free-brands-svg-icons"; 
+import { far } from "@fortawesome/free-regular-svg-icons";
+import { fab } from "@fortawesome/free-brands-svg-icons";
 
 library.add(fas, far, fab);
 
@@ -21,7 +21,7 @@ const Home = () => {
 
   const fetchData = () => {
     try {
-      fetch("http://10.10.12.45:8081/api/v1/websites")
+      fetch("https://bportal.azerenerji.az/api/v1/websites")
         .then((res) => {
           if (!res.ok) {
             throw new Error("Network response was not ok");
@@ -54,7 +54,7 @@ const Home = () => {
   return (
     <>
       <div className="backgroundImage">
-        <Container maxW="xxl" mt="40px" className="homeContainer">
+        <Container maxW="xxl"  zIndex="1000" className="homeContainer">
           <Container mb="40px">
             <Center>
               <div className="cardHomeLogo">
@@ -68,8 +68,8 @@ const Home = () => {
           <Wrap spacing="50px" justify="center">
             {data && data.length > 0 ? (
               data.map((item) => (
-                <Link to={item.url}>
-                  <WrapItem key={item.id}>
+                <Link to={item.url} target="_blank" rel="noopener noreferrer" key={item.id}>
+                  <WrapItem>
                     {" "}
                     <Center>
                       <div className="homeCard">
